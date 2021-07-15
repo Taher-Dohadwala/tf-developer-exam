@@ -10,6 +10,7 @@ Results:
 Epoch 80/100
 4/4 [==============================] - 0s 106ms/step - loss: 0.0746 - acc: 1.0000
 Reached max training accuracy. Stopping training!!!
+
 """
 import tensorflow as tf
 
