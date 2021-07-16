@@ -11,9 +11,7 @@ import tensorflow as tf
 
 # Define model
 model = tf.keras.Sequential([
-    tf.keras.layers.Conv2D(32,(3,3),input_shape=(100,100,3),activation="relu"),
-    tf.keras.layers.MaxPool2D(),
-    tf.keras.layers.Conv2D(16,(3,3),activation="relu"),
+    tf.keras.layers.Conv2D(16,(3,3),input_shape=(150,150,3),activation="relu"),
     tf.keras.layers.MaxPool2D(),
     tf.keras.layers.Conv2D(16,(3,3),activation="relu"),
     tf.keras.layers.MaxPool2D(),
@@ -23,27 +21,25 @@ model = tf.keras.Sequential([
 ])
 
 
-model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),loss="binary_crossentropy",metrics=['acc'])
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001),loss="binary_crossentropy",metrics=['acc'])
 
 train_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
         rescale=1./255,
-        shear_range=0.2,
-        zoom_range=0.2,
-        horizontal_flip=True,
         validation_split=0.1)
 
 train_generator = train_datagen.flow_from_directory(
     "cats_dogs/PetImages",
-    target_size=(100, 100),
+    target_size=(150, 150),
     batch_size=32,
     class_mode='binary',
     shuffle=True,
     subset="training"
 )
 
+
 validation_generator = train_datagen.flow_from_directory(
     "cats_dogs/PetImages",
-    target_size=(100, 100),
+    target_size=(150, 150),
     batch_size=32,
     class_mode='binary',
     subset="validation"
@@ -55,6 +51,7 @@ class MyEarlyStopping(tf.keras.callbacks.Callback):
         if logs.get("acc") and logs.get("val_acc") > 0.95:
             print("Reached 95% accuracy on training and validation!!!")
             self.model.stop_training = True
+
 
 mycallback = MyEarlyStopping()
 
